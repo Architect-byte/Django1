@@ -69,15 +69,20 @@ def student_profile(request, student_id):
             'year': student_data['year']
         })
     else:
-        raise Http404("Студент с таким ID не найден")
+        return render(request, '404.html', status=404)
 
 def course_profile(request, course_slug):
-    if len(course_slug) > 20:
+    if course_slug in COURSES_DATA:
+        course_data = COURSES_DATA[course_slug]
+        return render(request, 'course.html', {
+            'course_name': course_data['name'],
+            'course_duration': course_data['duration'],
+            'course_description': course_data['description'],
+            'instructor': course_data['instructor'],
+            'level': course_data['level']
+        })
+    else:
         return render(request, '404.html', status=404)
-    context = {
-        "id": course_slug
-    }
-    return render(request, 'course.html', status=200, context=context)
 
 def custom_404_view(request, exception):
     return render(request, '404.html', status=404)

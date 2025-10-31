@@ -1,24 +1,17 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>О нас</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: left; padding: 40px; background-color: #53679C; }
-        h1 { font-size: 48px; color: #F8C87C; }
-        p { font-size: 18px; }
-        a { text-decoration: none; color: #4bd9e3; }
-        a:hover { text-decoration: underline; }
-        img {
-            background-color: transparent;
-            max-width: 900px;
-            height: auto;
-        }
-    </style>
-</head>
-<body>
-    <h1>Я не смотрю аниме</h1>
-    <img src="https://avatars.mds.yandex.net/i?id=d86d1cac7ac74922748e492a21526dda_l-6475641-images-thumbs&n=13">
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}О нас{% endblock %}
+{% block heading %}О нас{% endblock %}
+
+{% block content %}
+<div style="display: flex; align-items: center; padding: 15px; background-color: #53679C; font-family: Arial, sans-serif; gap: 20px;">
+    <div class="student-info">
+    <p>Мы не смотрим аниме</p>
+    <p>Мы предлагаем уникальный взгляд на современные технологии и методы защиты информационных систем. В ходе обучения вы познакомитесь с основами сетевой безопасности, узнаете, как предотвращать атаки и защищать данные в условиях постоянно меняющейся киберугрозы.</p>
+    <p>Особое внимание будет уделено практическим аспектам защиты сетей, анализу уязвимостей, устройству систем обнаружения и предотвращения вторжений.</p>
+    <p>Наши курсы предназначены для студентов и специалистов средней квалификации, желающих повысить свои знания в области сетевой безопасности.</p>
+    </div>
+    <img src="https://avatars.mds.yandex.net/i?id=d86d1cac7ac74922748e492a21526dda_l-6475641-images-thumbs&n=13" 
+         alt="Аватар" style="background-color: transparent; max-width: 800px; height: auto; order: 1;">
+</div>
+{% endblock %}

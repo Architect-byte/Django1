@@ -1,21 +1,23 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Профиль курса</title>
-    <style>
-        body {
-            background-color: #26253a;
-            color: #6f8efc;
-            font-family: Arial, sans-serif;
-            padding: 40px;
-        }
-        h1 {
-            font-size: 36px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Профиль курса: {{ id }}</h1>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Курс Python{% endblock %}
+{% block heading %}Курс Python{% endblock %}
+
+{% block content %}
+<div class="student-info">
+    <p><strong>Название курса:</strong> {{ course_name }}</p>
+    <p><strong>Описание:</strong> {{ course_description }}</p>
+    <p><strong>Продолжительность обучения:</strong> {{ course_duration }}</p>
+    <p><strong>Преподователь:</strong> {{ instructor }}</p>
+    <p><strong>Уровень обучения:</strong> {{ level }}</p>
+</div>
+
+<div style="margin-top: 20px;">
+    <h3>Другие курсы:</h3>
+    <ul>
+        <li><a href="/course/python-basics/">Основы программирования на Python</a></li>
+        <li><a href="/course/web-security/">Веб-безопасность</a></li>
+        <li><a href="/course/network-defense/">Защита сетей</a></li>
+    </ul>
+</div>
+{% endblock %}
