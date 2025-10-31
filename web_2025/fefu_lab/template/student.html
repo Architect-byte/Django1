@@ -1,21 +1,22 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Профиль студента</title>
-    <style>
-        body {
-            background-color: #26253a;
-            color: #6f8efc;
-            font-family: Arial, sans-serif;
-            padding: 40px;
-        }
-        h1 {
-            font-size: 36px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Профиль студента с ID: {{id }}</h1>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Профиль студента{% endblock %}
+{% block heading %}Профиль студента{% endblock %}
+
+{% block content %}
+<div class="student-info">
+    <p><strong>ID студента:</strong> {{ student_id }}</p>
+    <p><strong>Информация:</strong> {{ student_info }}</p>
+    <p><strong>Факультет:</strong> {{ faculty }}</p>
+    <p><strong>Статус:</strong> {{ status }}</p>
+</div>
+
+<div style="margin-top: 20px;">
+    <h3>Другие студенты:</h3>
+    <ul>
+        <li><a href="/student/1/">Иван Петров</a></li>
+        <li><a href="/student/2/">Мария Сидорова</a></li>
+        <li><a href="/student/3/">Алексей Козлов</a></li>
+    </ul>
+</div>
+{% endblock %}

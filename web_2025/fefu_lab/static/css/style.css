@@ -1,0 +1,21 @@
+body { font-family: Arial, sans-serif; text-align: left; padding: 40px; background-color: #53679C; }
+.navigation {
+  background-color: #004080;
+  padding: 15px 10px;
+  text-align: center;
+  margin-bottom: 30px;
+  border-radius: 4px;
+}
+/* Заголовок страницы */
+h1 {
+  color: #004080;
+  font-size: 2.5em;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.student-info p {
+  font-size: 18px;
+  color: #222;
+  margin: 10px 0;
+}
