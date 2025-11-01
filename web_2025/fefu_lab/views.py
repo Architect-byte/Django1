@@ -1,6 +1,11 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
 from django.views import View
+from django.contrib.auth.models import User
+from django.contrib.auth import login
+from .form import LoginForm
+from .form import RegistrationForm 
+from .form import FeedbackForm
 
 STUDENTS_DATA = {
     1: {
@@ -89,3 +94,62 @@ def custom_404_view(request, exception):
 
 def custom_500_view(request):
     return render(request, '500.html', status=500)
+
+def login_view(request):
+    if request.method == 'POST': # обрабатываем POST
+        form = LoginForm(request.POST) # создаем форму 
+        if form.is_valid(): # проверяем валидность введенных данных
+            user = form.get_user()  # Предположим, что метод get_user() возвращает аутентифицированного пользователя
+            
+            return render(request, 'success.html', { # рендерим шаблон с message и title
+                'message': 'Вход выполнен успешно! Добро пожаловать в систему.',
+                'title': 'Вход в систему'
+            })
+    else:
+        form = LoginForm() # обрабатываем GET запрос - вызываем форму
+    
+    return render(request, 'login.html', { # рендерим шаблон страницы логина
+        'form': form, # передаем в шаблон созданную ранее форму 
+        'title': 'Вход в систему'
+    })
+
+def register_view(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            # Данные уже валидны и очищены
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+
+            # Создаем пользователя
+            user = User.objects.create_user(username=username, email=email, password=password)
+            user.save()
+
+            return render(request, 'success.html', {
+                'message': 'Регистрация прошла успешно! Теперь вы можете войти в систему.',
+                'title': 'Регистрация успешна'
+            })
+    else:
+        form = RegistrationForm()
+
+    return render(request, 'registration.html', {
+        'form': form,
+        'title': 'Регистрация'
+    })
+
+def feedback_view(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            return render(request, 'success.html', {
+                'message': 'Спасибо за ваш отзыв!',
+                'title': 'Отзыв получен'
+            })
+    else:
+        form = FeedbackForm()
+
+    return render(request, 'feedback.html', {
+        'form': form,
+        'title': 'Обратная связь'
+    })

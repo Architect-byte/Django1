@@ -61,3 +61,80 @@ ul li a:hover {
 }
 
 h3 { font-size: 1.3em; text-align: left; color: #F8C87C; }
+
+button[type="submit"] {
+    width: 50%;
+    padding: 10px;
+    background-color: #165899;
+    border: 2px solid #F8C87C; /* Добавляет контур */
+    color: #F8C87C;
+    font-size: 12px;
+    font-weight: bold; /* Жирный шрифт */
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 8px; /* Отступ сверху */
+}
+
+button[type="submit"]:hover {
+    background-color: #80002f;
+}
+
+.form-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #165899;
+    border-radius: 8px;
+    box-shadow: 0 0 15px #F8C87C;
+    font-family: Arial, sans-serif;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #F8C87C;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    border-color: #53679C;
+    outline: none;
+    box-shadow: 0 0 5px #F8C87C;
+}
+
+.error {
+    color: #d93025;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+p {
+    color: #F8C87C;
+    text-align: left;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+p a {
+    color: #da0050;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
