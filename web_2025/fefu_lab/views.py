@@ -96,20 +96,20 @@ def custom_500_view(request):
     return render(request, '500.html', status=500)
 
 def login_view(request):
-    if request.method == 'POST': # обрабатываем POST
-        form = LoginForm(request.POST) # создаем форму 
-        if form.is_valid(): # проверяем валидность введенных данных
-            user = form.get_user()  # Предположим, что метод get_user() возвращает аутентифицированного пользователя
+    if request.method == 'POST': 
+        form = LoginForm(request.POST) 
+        if form.is_valid(): 
+            user = form.get_user() 
             
-            return render(request, 'success.html', { # рендерим шаблон с message и title
+            return render(request, 'success.html', { 
                 'message': 'Вход выполнен успешно! Добро пожаловать в систему.',
                 'title': 'Вход в систему'
             })
     else:
-        form = LoginForm() # обрабатываем GET запрос - вызываем форму
+        form = LoginForm() 
     
-    return render(request, 'login.html', { # рендерим шаблон страницы логина
-        'form': form, # передаем в шаблон созданную ранее форму 
+    return render(request, 'login.html', { 
+        'form': form, 
         'title': 'Вход в систему'
     })
 
