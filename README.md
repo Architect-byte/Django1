@@ -21,7 +21,7 @@ CSRF-защита
 
 - заменяем его на значение на произвольное значение
 
-<img src="image/csrf.png" alt="false">
+<img src="image/csrf_false.png" alt="false">
 
 Заполняем логин-пароль, отправляем запрос и получаем ошибку
 
