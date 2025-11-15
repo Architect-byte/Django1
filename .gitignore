@@ -1,3 +1,4 @@
 *.pyc
 *.sqlite3
 web_2025/fefu_lab/migrations/*
+__pycache__/
