@@ -1,142 +1,78 @@
-from django.http import HttpResponse, Http404
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth import login
 from django.views import View
 from django.contrib.auth.models import User
-from django.contrib.auth import login
-from .form import LoginForm
-from .form import RegistrationForm 
-from .form import FeedbackForm
+from .form import LoginForm, RegistrationForm, FeedbackForm
+from .models import Student, Course, Instructor
 
-STUDENTS_DATA = {
-    1: {
-        'info': 'Иван Петров',
-        'faculty': 'Кибербезопасность',
-        'status': 'Активный',
-        'year': 3
-    },
-    2: {
-        'info': 'Мария Сидорова', 
-        'faculty': 'Информатика',
-        'status': 'Активный',
-        'year': 2
-    },
-    3: {
-        'info': 'Алексей Козлов',
-        'faculty': 'Программная инженерия', 
-        'status': 'Выпускник',
-        'year': 5
-    }
-}
-
-COURSES_DATA = {
-    'python-basics': {
-        'name': 'Основы программирования на Python',
-        'duration': 36,
-        'description': 'Базовый курс по программированию на языке Python для начинающих.',
-        'instructor': 'Доцент Петров И.С.',
-        'level': 'Начальный'
-    },
-    'web-security': {
-        'name': 'Веб-безопасность',
-        'duration': 48,
-        'description': 'Курс по защите веб-приложений от современных угроз.',
-        'instructor': 'Профессор Сидоров А.В.',
-        'level': 'Продвинутый'
-    },
-    'network-defense': {
-        'name': 'Защита сетей',
-        'duration': 42,
-        'description': 'Изучение методов и технологий защиты компьютерных сетей.',
-        'instructor': 'Доцент Козлова М.П.',
-        'level': 'Средний'
-    }
-}
 
 def home_page(request):
-    #return HttpResponse("Добро пожаловать на главную страницу!")
-    return render(request, 'home.html', status=200)
+    total_students = Student.objects.count()
+    total_courses = Course.objects.filter(is_active=True).count()
+    total_instructors = Instructor.objects.count()
+    recent_courses = Course.objects.filter(is_active=True).order_by('-created_at')[:3]
+    return render(request, 'home.html', {
+        'title': 'Главная страница',
+        'total_students': total_students,
+        'total_courses': total_courses,
+        'total_instructors': total_instructors,
+        'recent_courses': recent_courses
+    })
 
-# def about_page(request):
-#     return HttpResponse("I am dead inside")
-class About_page(View):
-    def get(self, request):
-        #return HttpResponse("I am dead inside")
-        return render(request, 'about.html', status=200)
 
 def student_profile(request, student_id):
-    if student_id in STUDENTS_DATA:
-        student_data = STUDENTS_DATA[student_id]
-        return render(request, 'student.html', {
-            'student_id': student_id,
-            'student_info': student_data['info'],
-            'faculty': student_data['faculty'],
-            'status': student_data['status'],
-            'year': student_data['year']
-        })
-    else:
-        return render(request, '404.html', status=404)
+    student = get_object_or_404(Student, pk=student_id)
+    return render(request, 'student.html', {
+        'student': student,
+        'title': f'Профиль студента {student.full_name}'
+    })
+
 
 def course_profile(request, course_slug):
-    if course_slug in COURSES_DATA:
-        course_data = COURSES_DATA[course_slug]
-        return render(request, 'course.html', {
-            'course_name': course_data['name'],
-            'course_duration': course_data['duration'],
-            'course_description': course_data['description'],
-            'instructor': course_data['instructor'],
-            'level': course_data['level']
-        })
-    else:
-        return render(request, '404.html', status=404)
+    course = get_object_or_404(Course, pk=course_slug)  # замените pk=course_slug на slug=course_slug, если в модели есть slug
+    return render(request, 'course.html', {
+        'course': course,
+        'title': f'Детали курса {course.title}'
+    })
 
-def custom_404_view(request, exception):
-    return render(request, '404.html', status=404)
 
-def custom_500_view(request):
-    return render(request, '500.html', status=500)
+class About_page(View):
+    def get(self, request):
+        return render(request, 'about.html', status=200)
+
 
 def login_view(request):
-    if request.method == 'POST': 
-        form = LoginForm(request.POST) 
-        if form.is_valid(): 
-            user = form.get_user() 
-            
-            return render(request, 'success.html', { 
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return render(request, 'success.html', {
                 'message': 'Вход выполнен успешно! Добро пожаловать в систему.',
                 'title': 'Вход в систему'
             })
     else:
-        form = LoginForm() 
-    
-    return render(request, 'login.html', { 
-        'form': form, 
-        'title': 'Вход в систему'
-    })
+        form = LoginForm()
+    return render(request, 'login.html', {'form': form, 'title': 'Вход в систему'})
+
 
 def register_view(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            # Данные уже валидны и очищены
-            username = form.cleaned_data['username']
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-
-            # Создаем пользователя
-            user = User.objects.create_user(username=username, email=email, password=password)
-            user.save()
-
+            user = User.objects.create_user(
+                username=form.cleaned_data['username'],
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password']
+            )
             return render(request, 'success.html', {
                 'message': 'Регистрация прошла успешно! Теперь вы можете войти в систему.',
                 'title': 'Регистрация успешна'
             })
     else:
         form = RegistrationForm()
+    return render(request, 'registration.html', {'form': form, 'title': 'Регистрация'})
 
-    return render(request, 'registration.html', {
-        'form': form,
-        'title': 'Регистрация'
-    })
 
 def feedback_view(request):
     if request.method == 'POST':
@@ -148,8 +84,12 @@ def feedback_view(request):
             })
     else:
         form = FeedbackForm()
+    return render(request, 'feedback.html', {'form': form, 'title': 'Обратная связь'})
 
-    return render(request, 'feedback.html', {
-        'form': form,
-        'title': 'Обратная связь'
-    })
+
+def custom_404_view(request, exception):
+    return render(request, '404.html', status=404)
+
+
+def custom_500_view(request):
+    return render(request, '500.html', status=500)

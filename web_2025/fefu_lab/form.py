@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from .models import Student, Course, Enrollment, Instructor
 
 class RegistrationForm(forms.Form):
     username = forms.CharField(
@@ -102,3 +103,52 @@ class FeedbackForm(forms.Form):
         if len(message.strip()) < 10:
             raise ValidationError("Сообщение должно содержать минимум 10 символов")
         return message.strip()
+    
+class StudentForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ['first_name', 'last_name', 'email', 'birth_date', 'faculty']
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'birth_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'faculty': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+
+class InstructorForm(forms.ModelForm):
+    class Meta:
+        model = Instructor
+        fields = ['first_name', 'last_name', 'email', 'specialization', 'degree']
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'specialization': forms.TextInput(attrs={'class': 'form-control'}),
+            'degree': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+class CourseForm(forms.ModelForm):
+    class Meta:
+        model = Course
+        fields = ['title', 'description', 'duration', 'instructor', 'is_active']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'duration': forms.NumberInput(attrs={'class': 'form-control'}),
+            'instructor': forms.Select(attrs={'class': 'form-control'}),
+            'is_active': forms.CheckboxInput(),
+        }
+
+
+class EnrollmentForm(forms.ModelForm):
+    class Meta:
+        model = Enrollment
+        fields = ['student', 'course', 'status']
+        widgets = {
+            'student': forms.Select(attrs={'class': 'form-control'}),
+            'course': forms.Select(attrs={'class': 'form-control'}),
+            'status': forms.Select(attrs={'class': 'form-control'}),
+        }
