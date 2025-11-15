@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block heading %}{{ title }}{% endblock %}
+
+{% block content %}
+    <ul>
+    {% for course in courses %}
+        <li>
+            <a href="{% url 'course_profile' course.slug %}">
+                {{ course.title }} (ID: {{ course.id }})
+            </a>
+        </li>
+    {% empty %}
+        <li>Курсы не найдены.</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

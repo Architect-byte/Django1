@@ -23,6 +23,7 @@ class RegistrationForm(forms.Form):
         label='Подтверждение пароля',
         widget=forms.PasswordInput(attrs={'class': 'form-control'})
     )
+
     def clean_username(self):
         username = self.cleaned_data['username']
         if User.objects.filter(username=username).exists():
@@ -31,13 +32,15 @@ class RegistrationForm(forms.Form):
 
     def clean_email(self):
         email = self.cleaned_data['email']
-        if User.objects.filter(email=email).exists():
+        email_exists_in_user = User.objects.filter(email=email).exists()
+        email_exists_in_student = Student.objects.filter(email=email).exists()
+        if email_exists_in_user or email_exists_in_student:
             raise ValidationError("Пользователь с таким email уже существует")
         return email
 
     def clean_password(self):
         password = self.cleaned_data['password']
-        validate_password(password)  # проверка сложности пароля
+        # Можно добавить validate_password(password) для проверки сложности
         return password
 
     def clean(self):

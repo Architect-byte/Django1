@@ -22,17 +22,28 @@ def home_page(request):
 
 def student_profile(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
+    other_students = Student.objects.exclude(pk=student_id)[:10]  # например, 10 других студентов
     return render(request, 'student.html', {
         'student': student,
-        'title': f'Профиль студента {student.full_name}'
+        'other_students': other_students,
+        'title': f'Профиль студента {student.first_name}',
     })
 
 
 def course_profile(request, course_slug):
-    course = get_object_or_404(Course, pk=course_slug)  # замените pk=course_slug на slug=course_slug, если в модели есть slug
+    course = get_object_or_404(Course, slug=course_slug)
+    other_courses = Course.objects.exclude(pk=course.pk)[:10]
     return render(request, 'course.html', {
         'course': course,
-        'title': f'Детали курса {course.title}'
+        'other_courses': other_courses,
+        'title': f'Детали курса {course.slug}'
+    })
+
+def course_list(request):
+    courses = Course.objects.all().order_by('id')  # Список всех курсов по возрастанию id
+    return render(request, 'course_list.html', {
+        'courses': courses,
+        'title': 'Список курсов',
     })
 
 
@@ -60,10 +71,16 @@ def register_view(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            user = User.objects.create_user(
-                username=form.cleaned_data['username'],
-                email=form.cleaned_data['email'],
-                password=form.cleaned_data['password']
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            user = User.objects.create_user(username=username, email=email, password=password)
+            # Создаем связанного студента
+            Student.objects.create(
+                first_name=username,
+                last_name='Маркс',
+                email=email,
+                faculty='CS'
             )
             return render(request, 'success.html', {
                 'message': 'Регистрация прошла успешно! Теперь вы можете войти в систему.',

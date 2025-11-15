@@ -1,23 +1,31 @@
 {% extends "base.html" %}
 
-{% block title %}Курс Python{% endblock %}
-{% block heading %}Курс Python{% endblock %}
+{% block title %}Курс {{ course.title }}{% endblock %}
+{% block heading %}Курс {{ course.title }}{% endblock %}
 
 {% block content %}
-<div class="student-info">
-    <p><strong>Название курса:</strong> {{ course_name }}</p>
-    <p><strong>Описание:</strong> {{ course_description }}</p>
-    <p><strong>Продолжительность обучения:</strong> {{ course_duration }}</p>
-    <p><strong>Преподователь:</strong> {{ instructor }}</p>
-    <p><strong>Уровень обучения:</strong> {{ level }}</p>
+<div class="course-info">
+    <p><strong>Название курса:</strong> {{ course.title }}</p>
+    <p><strong>Описание:</strong> {{ course.description }}</p>
+    <p><strong>Продолжительность обучения (часов):</strong> {{ course.duration }}</p>
+    <p><strong>Преподаватель:</strong> 
+        {% if course.instructor %}
+            {{ course.instructor.first_name }} {{ course.instructor.last_name }}
+        {% else %}
+            Не назначен
+        {% endif %}
+    </p>
+    <p><strong>Уровень обучения:</strong> {{ course.get_level_display }}</p>
 </div>
 
 <div style="margin-top: 20px;">
     <h3>Другие курсы:</h3>
     <ul>
-        <li><a href="/course/python-basics/">Основы программирования на Python</a></li>
-        <li><a href="/course/web-security/">Веб-безопасность</a></li>
-        <li><a href="/course/network-defense/">Защита сетей</a></li>
+        {% for other_course in other_courses %}
+            <li><a href="{% url 'course_profile' other_course.slug %}">{{ other_course.title }}</a></li>
+        {% empty %}
+            <li>Нет других курсов.</li>
+        {% endfor %}
     </ul>
 </div>
 {% endblock %}

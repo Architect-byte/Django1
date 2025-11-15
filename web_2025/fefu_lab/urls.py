@@ -11,5 +11,6 @@ urlpatterns = [
     path('course/<slug:course_slug>/', views.course_profile, name='course_profile'),
     path('login/', views.login_view, name='login_view'),
     path('register/', views.register_view, name='register_view'),
-    path('feedback/', views.feedback_view, name='feedback_view')
+    path('feedback/', views.feedback_view, name='feedback_view'),
+    path('course_list/', views.course_list, name='course_list')
 ]
