@@ -30,9 +30,17 @@ student_profile и course_profile выводят детальную информ
 Скриншоты корректно работающего приложения
 
 <img src="image/home.png" alt="home">
-<img src="image/about.png" alt="about">
-<img src="image/feedback.png" alt="feedback">
-<img src="image/register.png" alt="register">
-<img src="image/login.png" alt="login">
 <img src="image/student.png" alt="student">
-<img src="image/course.png" alt="course">
+<img src="image/course_list.png" alt="list">
+<img src="image/course_slug.png" alt="slug">
+Пытаемся создать нового пользователя с почтой уже существующей в нашей БД, но нам этого не позволяют
+<img src="image/validation.png" alt="validation">
+Создаем нового пользователя
+<img src="image/create_student.png" alt="student">
+Пользователь успешно создан
+<img src="image/success.png" alt="success">
+Видим, что наш новый пользователь появился на сайте
+<img src="image/new_student.png" alt="student">
+Видим данные нового пользователя в админке
+<img src="image/admin_new.png" alt="admin">
+<img src="image/ruben.png" alt="ruben">
