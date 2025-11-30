@@ -29,18 +29,24 @@ student_profile и course_profile выводят детальную информ
 
 Скриншоты корректно работающего приложения
 
-<img src="image/home.png" alt="home">
+Профиль пользователя из группы Student
+<img src="image/student_profile.png" alt="home">
 <img src="image/student.png" alt="student">
-<img src="image/course_list.png" alt="list">
-<img src="image/course_slug.png" alt="slug">
+Профиль пользователя из группы Teacher
+<img src="image/teacher_profile.png" alt="list">
+<img src="image/teacher.png" alt="slug">
+Профиль пользователя из группы Admin
+<img src="image/admin_profile.png" alt="list">
+<img src="image/admin.png" alt="slug">
 Пытаемся создать нового пользователя с почтой уже существующей в нашей БД, но нам этого не позволяют
 <img src="image/validation.png" alt="validation">
 Создаем нового пользователя
-<img src="image/create_student.png" alt="student">
+<img src="image/new_user.png" alt="student">
 Пользователь успешно создан
 <img src="image/success.png" alt="success">
 Видим, что наш новый пользователь появился на сайте
-<img src="image/new_student.png" alt="student">
-Видим данные нового пользователя в админке
-<img src="image/admin_new.png" alt="admin">
-<img src="image/ruben.png" alt="ruben">
+<img src="image/new_user_profile.png" alt="student">
+Результат авторизации с некорректными данными
+<img src="image/incorrect.png" alt="admin">
+Пароли хранимые в виде хешей
+<img src="image/hash.png" alt="ruben">
