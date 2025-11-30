@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Профиль пользователя{% endblock %}
+
+{% block heading %}Профиль пользователя{% endblock %}
+
+{% block content %}
+  <div class="profile-info">
+    {% if role == "Админ" %}
+      <p><strong>Роль:</strong> Администратор</p>
+      <p><a href="{{ dashboard_link }}">Перейти в админку Django</a></p>
+
+    {% elif role == "Преподаватель" %}
+      <p><strong>Роль:</strong> Преподаватель</p>
+      <p><strong>Имя:</strong> {{ instructor.first_name }}</p>
+      <p><strong>Фамилия:</strong> {{ instructor.last_name }}</p>
+      <p><strong>Email:</strong> {{ instructor.email }}</p>
+      <h3>Управление курсами:</h3>
+      <ul>
+        {% for course in courses %}
+          <li><a href="{% url 'course_profile' course.slug %}">{{ course.title }}</a></li>
+        {% empty %}
+          <li>Нет курсов для управления</li>
+        {% endfor %}
+      </ul>
+
+    {% else %}
+      <p><strong>Роль:</strong> Студент</p>
+      <p><strong>Имя:</strong> {{ student.user.first_name }}</p>
+      <p><strong>Фамилия:</strong> {{ student.user.last_name }}</p>
+      <p><strong>Email:</strong> {{ student.user.email }}</p>
+      <p><strong>Дата рождения:</strong> {{ student.birth_date|date:"d.m.Y" }}</p>
+      <p><strong>Факультет:</strong> {{ student.faculty }}</p>
+      <h3>Курсы, на которые записан:</h3>
+      <ul>
+        {% for enrollment in enrollments %}
+          <li><a href="{% url 'course_profile' enrollment.course.slug %}">{{ enrollment.course.title }}</a> ({{ enrollment.status }})</li>
+        {% empty %}
+          <li>Нет записей на курсы.</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+{% endblock %}

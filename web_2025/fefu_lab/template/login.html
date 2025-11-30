@@ -7,7 +7,6 @@
 <div class="form-container">
     <form method="post">
         {% csrf_token %}
-        
         {% for field in form %}
             <div class="form-group">
                 {{ field.label_tag }}
@@ -24,9 +23,9 @@
         
         <button type="submit">Войти</button>
     </form>
-    
+
     <p style="margin-top: 20px;">
-        Нет аккаунта? <a href="/register/">Зарегистрируйтесь</a>
+        Нет аккаунта? <a href="{% url 'register_view' %}">Зарегистрируйтесь</a>
     </p>
 </div>
 {% endblock %}

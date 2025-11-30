@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
-from django.contrib.auth import login
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth import login, logout
 from django.views import View
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .form import LoginForm, RegistrationForm, FeedbackForm
 from .models import Student, Course, Instructor
@@ -22,11 +23,11 @@ def home_page(request):
 
 def student_profile(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
-    other_students = Student.objects.exclude(pk=student_id)[:10]  # например, 10 других студентов
+    other_students = Student.objects.exclude(pk=student_id)[:10]
     return render(request, 'student.html', {
         'student': student,
         'other_students': other_students,
-        'title': f'Профиль студента {student.first_name}',
+        'title': f'Профиль студента {student.user.first_name}',
     })
 
 
@@ -39,8 +40,9 @@ def course_profile(request, course_slug):
         'title': f'Детали курса {course.slug}'
     })
 
+
 def course_list(request):
-    courses = Course.objects.all().order_by('id')  # Список всех курсов по возрастанию id
+    courses = Course.objects.all().order_by('id')
     return render(request, 'course_list.html', {
         'courses': courses,
         'title': 'Список курсов',
@@ -58,13 +60,15 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return render(request, 'success.html', {
-                'message': 'Вход выполнен успешно! Добро пожаловать в систему.',
-                'title': 'Вход в систему'
-            })
+            return redirect('profile')  # Перенаправление после успешного входа
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form, 'title': 'Вход в систему'})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
 
 
 def register_view(request):
@@ -75,13 +79,8 @@ def register_view(request):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             user = User.objects.create_user(username=username, email=email, password=password)
-            # Создаем связанного студента
-            Student.objects.create(
-                first_name=username,
-                last_name='Маркс',
-                email=email,
-                faculty='CS'
-            )
+            # Создаем связанный профиль студента
+            Student.objects.create(user=user, faculty='CS', role='STUDENT')
             return render(request, 'success.html', {
                 'message': 'Регистрация прошла успешно! Теперь вы можете войти в систему.',
                 'title': 'Регистрация успешна'
@@ -89,6 +88,45 @@ def register_view(request):
     else:
         form = RegistrationForm()
     return render(request, 'registration.html', {'form': form, 'title': 'Регистрация'})
+
+
+@login_required
+def profile_view(request):
+    user = request.user
+    if hasattr(user, 'student_profile'):
+        role = user.student_profile.role
+        if role == 'ADMIN':
+            context = {'dashboard_link': '/admin/', 'role': 'Админ'}
+        elif role == 'TEACHER':
+            context = {'dashboard_link': '/teacher_dashboard/', 'role': 'Преподаватель'}
+        else:
+            context = {'enrollments': user.student_profile.enrollments.all(), 'role': 'Студент'}
+        return render(request, 'profile.html', context)
+    else:
+        return redirect('login_view')
+
+
+@login_required
+def student_dashboard_view(request):
+    student = request.user.student_profile
+    enrollments = student.enrollments.all()
+    return render(request, 'student_dashboard.html', {
+        'student': student,
+        'enrollments': enrollments,
+        'title': 'Дашборд студента'
+    })
+
+
+@login_required
+def teacher_dashboard_view(request):
+    # Заглушка, реализуйте логику для преподавателя
+    instructor = Instructor.objects.filter(email=request.user.email).first()
+    courses = Course.objects.filter(instructor=instructor)
+    return render(request, 'teacher_dashboard.html', {
+        'instructor': instructor,
+        'courses': courses,
+        'title': 'Дашборд преподавателя'
+    })
 
 
 def feedback_view(request):

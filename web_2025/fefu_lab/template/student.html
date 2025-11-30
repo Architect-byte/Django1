@@ -5,9 +5,9 @@
 
 {% block content %}
 <div class="student-info">
-    <p><strong>Имя:</strong> {{ student.first_name }}</p>
-    <p><strong>Фамилия:</strong> {{ student.last_name }}</p>
-    <p><strong>Email:</strong> {{ student.email }}</p>
+    <p><strong>Имя:</strong> {{ student.user.first_name }}</p>
+    <p><strong>Фамилия:</strong> {{ student.user.last_name }}</p>
+    <p><strong>Email:</strong> {{ student.user.email }}</p>
     <p><strong>Дата рождения:</strong> {{ student.birth_date|date:"d.m.Y" }}</p>
     <p><strong>Факультет:</strong> {{ student.faculty }}</p>
     <p><strong>Дата создания:</strong> {{ student.created_at|date:"d.m.Y H:i" }}</p>
@@ -17,7 +17,7 @@
     <h3>Другие студенты:</h3>
     <ul>
         {% for other_student in other_students %}
-            <li><a href="{% url 'student_profile' other_student.id %}">{{ other_student.last_name }} {{ other_student.first_name }}</a></li>
+            <li><a href="{% url 'student_profile' other_student.id %}">{{ other_student.user.last_name }} {{ other_student.user.first_name }}</a></li>
         {% empty %}
             <li>Нет других студентов.</li>
         {% endfor %}

@@ -6,15 +6,29 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <div class="navigation">
-        <a href="/">Главная</a> | 
-        <a href="/about/">О нас</a> | 
-        <a href="/feedback/">Обратная связь</a> | 
-        <a href="/register/">Регистрация</a> |
-        <a href="/login/">Вход</a> |
-        <a href="/student/1/">Профиль студента</a> |
-        <a href="/course/python-basics/">Курс Python</a>
-    </div>    
+   <div class="navigation">
+    <a href="{% url 'home' %}">Главная</a> | 
+    <a href="{% url 'about' %}">О нас</a> | 
+    <a href="{% url 'feedback_view' %}">Обратная связь</a> | 
+    <a href="{% url 'course_list' %}">Курсы</a> |
+
+    {% if user.is_authenticated %}
+        {% if user.student_profile.role == 'TEACHER' or user.student_profile.role == 'ADMIN' %}
+            <a href="{% url 'teacher_dashboard' %}">Дашборд</a> |
+        {% else %}
+            <a href="{% url 'student_dashboard' %}">Дашборд</a> |
+        {% endif %}
+        <a href="{% url 'profile' %}">Профиль ({{ user.first_name }})</a> |
+        {% if user.is_staff %}
+            <a href="/admin/">Админка</a> |
+        {% endif %}
+        <a href="{% url 'logout_view' %}">Выйти</a>
+    {% else %}
+        <a href="{% url 'login_view' %}">Вход</a> |
+        <a href="{% url 'register_view' %}">Регистрация</a>
+    {% endif %}
+
+</div>
     <h1>{% block heading %}{% endblock %}</h1>
     
     {% block content %}{% endblock %}

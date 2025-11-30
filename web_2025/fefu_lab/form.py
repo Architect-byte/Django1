@@ -33,9 +33,8 @@ class RegistrationForm(forms.Form):
     def clean_email(self):
         email = self.cleaned_data['email']
         email_exists_in_user = User.objects.filter(email=email).exists()
-        email_exists_in_student = Student.objects.filter(email=email).exists()
-        if email_exists_in_user or email_exists_in_student:
-            raise ValidationError("Пользователь с таким email уже существует")
+        if email_exists_in_user:
+            raise forms.ValidationError("Пользователь с таким email уже существует")
         return email
 
     def clean_password(self):
@@ -51,25 +50,20 @@ class RegistrationForm(forms.Form):
             self.add_error('password_confirm', "Пароли не совпадают")
 
 class LoginForm(forms.Form):
-    username = forms.CharField(
-        max_length=50,
-        label='Логин',
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
-    password = forms.CharField(
-        label='Пароль',
-        widget=forms.PasswordInput(attrs={'class': 'form-control'})
-    )
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     def clean(self):
         cleaned_data = super().clean()
-        username = cleaned_data.get('username')
+        email = cleaned_data.get('email')
         password = cleaned_data.get('password')
 
-        if username and password:
-            user = authenticate(username=username, password=password)
+        if email and password:
+            user = authenticate(email=email, password=password)
             if user is None:
-                raise forms.ValidationError("Неверный логин или пароль")
+                raise forms.ValidationError("Неверный email или пароль")
+            self.user = user
         return cleaned_data
+
     def get_user(self):
         return getattr(self, 'user', None)
 
@@ -110,11 +104,8 @@ class FeedbackForm(forms.Form):
 class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
-        fields = ['first_name', 'last_name', 'email', 'birth_date', 'faculty']
+        fields = ['birth_date', 'faculty']
         widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'birth_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'faculty': forms.Select(attrs={'class': 'form-control'}),
         }

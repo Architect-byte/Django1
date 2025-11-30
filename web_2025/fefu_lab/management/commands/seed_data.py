@@ -2,6 +2,8 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 from fefu_lab.models import Student, Instructor, Course, Enrollment
 from datetime import date, timedelta
+from django.contrib.auth.models import User
+
 
 class Command(BaseCommand):
     help = 'Заполняет базу данных тестовыми данными'
@@ -20,66 +22,94 @@ class Command(BaseCommand):
                 last_name='Петров',
                 email='i.petrov@fefu.ru',
                 specialization='Кибербезопасность',
-                degree='Кандидат технических наук'
+                degree='Кандидат технических наук',
+                role='TEACHER'
             ),
             Instructor(
                 first_name='Мария',
                 last_name='Сидорова',
                 email='m.sidorova@fefu.ru',
                 specialization='Веб-разработка',
-                degree='Доктор технических наук'
+                degree='Доктор технических наук',
+                role='TEACHER'
             ),
             Instructor(
                 first_name='Алексей',
                 last_name='Козлов',
                 email='a.kozlov@fefu.ru',
-                specialization='Сетевые технологии'
+                specialization='Сетевые технологии',
+                role='TEACHER'
             ),
         ]
         
         for instructor in instructors:
             instructor.save()
         
-        students = [
-            Student(
-                first_name='Анна',
-                last_name='Иванова',
-                email='anna.ivanova@fefu.ru',
-                birth_date=date(2000, 5, 15),
-                faculty='CS'
-            ),
-            Student(
-                first_name='Дмитрий',
-                last_name='Смирнов',
-                email='dmitry.smirnov@fefu.ru',
-                birth_date=date(1999, 8, 22),
-                faculty='SE'
-            ),
-            Student(
-                first_name='Екатерина',
-                last_name='Попова',
-                email='ekaterina.popova@fefu.ru',
-                birth_date=date(2001, 3, 10),
-                faculty='IT'
-            ),
-            Student(
-                first_name='Михаил',
-                last_name='Васильев',
-                email='mikhail.vasilyev@fefu.ru',
-                birth_date=date(2000, 11, 5),
-                faculty='DS'
-            ),
-            Student(
-                first_name='Ольга',
-                last_name='Новикова',
-                email='olga.novikova@fefu.ru',
-                birth_date=date(1999, 12, 30),
-                faculty='WEB'
-            ),
-        ]
-        
-        for student in students:
+        students_data = [
+        {
+            'username': 'ivanov',
+            'first_name': 'Иван',
+            'last_name': 'Иванов',
+            'email': 'ivan.ivanov@example.com',
+            'birth_date': date(2000, 5, 15),
+            'faculty': 'CS',
+            'role': 'STUDENT'
+        },
+        {
+            'username': 'dmitrysmirnov',
+            'first_name': 'Дмитрий',
+            'last_name': 'Смирнов',
+            'email': 'dmitry.smirnov@fefu.ru',
+            'birth_date': date(1999, 8, 22),
+            'faculty': 'SE',
+            'role': 'STUDENT'
+        },
+        {
+            'username': 'ekaterinapopova',
+            'first_name': 'Екатерина',
+            'last_name': 'Попова',
+            'email': 'ekaterina.popova@fefu.ru',
+            'birth_date': date(2001, 3, 10),
+            'faculty': 'IT',
+            'role': 'STUDENT'
+        },
+        {
+            'username': 'mikhailvasilyev',
+            'first_name': 'Михаил',
+            'last_name': 'Васильев',
+            'email': 'mikhail.vasilyev@fefu.ru',
+            'birth_date': date(2000, 11, 5),
+            'faculty': 'DS',
+            'role': 'STUDENT'
+        },
+        {
+            'username': 'olganovikova',
+            'first_name': 'Ольга',
+            'last_name': 'Новикова',
+            'email': 'olga.novikova@fefu.ru',
+            'birth_date': date(1999, 12, 30),
+            'faculty': 'WEB',
+            'role': 'STUDENT'
+        },
+    ]
+        students = []
+        for data in students_data:
+        # Создаем User
+            user = User.objects.create_user(
+                username=data['username'],
+                first_name=data['first_name'],
+                last_name=data['last_name'],
+                email=data['email'],
+                password='default_password'  # смените при необходимости
+            )
+            # Создаем профиль Student, связывая с User
+            student = Student.objects.create(
+                user=user,
+                birth_date=data['birth_date'],
+                faculty=data['faculty']
+            )
             student.save()
+            students.append(student)
         
         courses = [
             Course(
@@ -143,7 +173,7 @@ class Command(BaseCommand):
         self.stdout.write(
             self.style.SUCCESS(
                 f'Успешно создано: {len(instructors)} преподавателей, '
-                f'{len(students)} студентов, {len(courses)} курсов, '
+                f'{len(students_data)} студентов, {len(courses)} курсов, '
                 f'{len(enrollments)} записей на курсы'
             )
         )
