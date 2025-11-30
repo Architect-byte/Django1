@@ -20,6 +20,9 @@ def home_page(request):
         'recent_courses': recent_courses
     })
 
+def instructors_list(request):
+    instructors = Instructor.objects.all().order_by('last_name', 'first_name')
+    return render(request, 'instructors_list.html', {'instructors': instructors, 'title': 'Преподаватели'})
 
 def student_profile(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
@@ -93,22 +96,33 @@ def register_view(request):
 @login_required
 def profile_view(request):
     user = request.user
+    context = {'user': user}
     if hasattr(user, 'student_profile'):
         role = user.student_profile.role
-        if role == 'ADMIN':
-            context = {'dashboard_link': '/admin/', 'role': 'Админ'}
-        elif role == 'TEACHER':
-            context = {'dashboard_link': '/teacher_dashboard/', 'role': 'Преподаватель'}
-        else:
-            context = {'enrollments': user.student_profile.enrollments.all(), 'role': 'Студент'}
+        if role == 'STUDENT':
+            context = {'enrollments': user.student_profile.enrollments.all(), 'role': 'Студент', 'user': user, 'student': user.student_profile}
         return render(request, 'profile.html', context)
-    else:
-        return redirect('login_view')
+    instructor = Instructor.objects.filter(email=user.email).first()
+    if instructor:
+        context.update({
+            'dashboard_link': '/teacher_dashboard/',
+            'role': 'Преподаватель',
+            'instructor': instructor,
+        })
+        return render(request, 'profile.html', context)
+
+    # Если не преподаватель, считаем админом
+    context.update({
+        'dashboard_link': '/admin/',
+        'role': 'Админ',
+    })
+    return render(request, 'profile.html', context)
 
 
 @login_required
 def student_dashboard_view(request):
-    student = request.user.student_profile
+    user = request.user
+    student = user.student_profile
     enrollments = student.enrollments.all()
     return render(request, 'student_dashboard.html', {
         'student': student,

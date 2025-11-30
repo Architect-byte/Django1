@@ -13,10 +13,10 @@
     <a href="{% url 'course_list' %}">Курсы</a> |
 
     {% if user.is_authenticated %}
-        {% if user.student_profile.role == 'TEACHER' or user.student_profile.role == 'ADMIN' %}
-            <a href="{% url 'teacher_dashboard' %}">Дашборд</a> |
-        {% else %}
+        {% if user.student_profile.role == 'STUDENT' %}
             <a href="{% url 'student_dashboard' %}">Дашборд</a> |
+        {% else %}
+            <a href="{% url 'teacher_dashboard' %}">Дашборд</a> |
         {% endif %}
         <a href="{% url 'profile' %}">Профиль ({{ user.first_name }})</a> |
         {% if user.is_staff %}
