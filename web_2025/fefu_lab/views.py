@@ -24,6 +24,14 @@ def instructors_list(request):
     instructors = Instructor.objects.all().order_by('last_name', 'first_name')
     return render(request, 'instructors_list.html', {'instructors': instructors, 'title': 'Преподаватели'})
 
+def is_instructor(request):
+    instructor = Instructor.objects.filter(email=request.email).exists()
+    context = {
+        # другие переменные
+        'is_instructors': instructor,
+    }
+    return render(request, 'base.html', context)
+
 def student_profile(request, student_id):
     student = get_object_or_404(Student, pk=student_id)
     other_students = Student.objects.exclude(pk=student_id)[:10]
