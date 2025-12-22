@@ -1,0 +1,15 @@
+command = '/var/www/fefu_lab/venv/bin/gunicorn'
+pythonpath = '/var/www/fefu_lab'
+bind = '127.0.0.1:8000'
+workers = 3
+worker_class = 'sync'
+worker_connections = 1000
+max_requests = 1000
+max_requests_jitter = 100
+timeout = 30
+keepalive = 5
+preload_app = True
+capture_output = True
+loglevel = 'info'
+accesslog = '/var/log/gunicorn/access.log'
+errorlog = '/var/log/gunicorn/error.log'
