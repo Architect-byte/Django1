@@ -31,13 +31,13 @@ sudo -u postgres psql -c "CREATE USER fefu_user WITH PASSWORD '$DB_PASS';" 2>/de
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE fefu_lab_db TO fefu_user;"
 
 # Очистка и клонирование
-rm -rf $PROJECT_DIR/project $PROJECT_DIR/deploy
+rm -rf $PROJECT_DIR/Django1 $PROJECT_DIR/deploy
 mkdir -p $PROJECT_DIR/{deploy/{nginx,systemd,gunicorn,scripts},static,media}
 cd $PROJECT_DIR
-git clone $REPO_URL project
+git clone $REPO_URL
 
 # Проект
-cd project
+cd Django1
 python3 -m venv venv
 . venv/bin/activate
 pip install -r requirements.txt
