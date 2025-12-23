@@ -16,8 +16,8 @@ fi
 systemctl stop gunicorn nginx || true
 
 # Решение lock проблем
-#rm -f /var/lib/dpkg/lock* /var/cache/apt/archives/lock
-#dpkg --configure -a
+rm -f /var/lib/dpkg/lock* /var/cache/apt/archives/lock
+dpkg --configure -a
 
 # Установка ПО
 apt update
