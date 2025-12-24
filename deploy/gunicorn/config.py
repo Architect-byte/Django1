@@ -1,4 +1,4 @@
-command = '/var/www/fefu_lab/venv/bin/gunicorn'
+command = '/var/www/fefu_lab/Django1/venv/bin/gunicorn'
 pythonpath = '/var/www/fefu_lab'
 bind = '127.0.0.1:8000'
 workers = 3
