@@ -8,10 +8,10 @@ Group=www-data
 WorkingDirectory=/var/www/fefu_lab
 Environment="DJANGO_ENV=production"
 Environment="PATH=/var/www/fefu_lab/venv/bin"
-Environment="DJANGO_SECRET_KEY=django-insecure-super-secret-key-change-me"
+Environment="DJANGO_SECRET_KEY=a1b2c3d4e5f67890abcdef1234567890g1h2i3j4k5l6m7n8o9p0q1r2s3t4"
 Environment="DB_NAME=fefu_lab_db"
 Environment="DB_USER=fefu_user"
-Environment="DB_PASSWORD=secure_fefu_pass_2025"
+Environment="DB_PASSWORD=user"
 Environment="DB_HOST=localhost"
 Environment="DB_PORT=5432"
 
