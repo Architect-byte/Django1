@@ -4,6 +4,7 @@ set -e
 echo "Деплой FEFU Lab $(date)"
 
 PROJECT_DIR="/var/www/fefu_lab"
+VENV_DIR="var/www/fefu_lab/Django1/venv"
 REPO_URL="https://github.com/Architect-byte/Django1.git"
 DB_PASS="user"
 
@@ -25,10 +26,10 @@ apt install -y python3 python3-pip python3-venv python3-dev \
     postgresql postgresql-contrib nginx git libpq-dev
 
 # PostgreSQL
-systemctl restart postgresql
-sudo -u postgres psql -c "CREATE DATABASE fefu_lab_db;" 2>/dev/null || true
-sudo -u postgres psql -c "CREATE USER fefu_user WITH PASSWORD '$DB_PASS';" 2>/dev/null || true
-sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE fefu_lab_db TO fefu_user;"
+#systemctl restart postgresql
+#sudo -u postgres psql -c "CREATE DATABASE fefu_lab_db;" 2>/dev/null || true
+#sudo -u postgres psql -c "CREATE USER fefu_user WITH PASSWORD '$DB_PASS';" 2>/dev/null || true
+#sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE fefu_lab_db TO fefu_user;"
 
 # Очистка и клонирование
 #rm -rf $PROJECT_DIR/
@@ -50,9 +51,16 @@ sudo rm -f /etc/nginx/sites-enabled/default
 
 # БД и данные
 cd web_2025
-python manage.py migrate --run-syncdb
-python manage.py populate_db
+#python manage.py migrate --run-syncdb
+#python manage.py populate_db
+#python manage.py collectstatic --noinput
+source $VENV_DIR/bin/activate
+python manage.py dumpdata --indent 2 --output /tmp/data1.json
+python manage.py migrate
+#python manage.py loaddata data.json || echo "data.json не найден — пропускаем"
+python manage.py loaddata /tmp/data1.json || echo "data1.json не найден — пропускаем"
 python manage.py collectstatic --noinput
+deactivate
 
 # Права
 chown -R www-data:www-data $PROJECT_DIR
