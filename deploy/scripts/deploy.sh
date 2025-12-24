@@ -55,6 +55,7 @@ cd web_2025
 #python manage.py populate_db
 #python manage.py collectstatic --noinput
 #source $VENV_DIR/bin/activate
+python manage.py makemigrations
 python manage.py dumpdata --indent 2 --output /tmp/data1.json
 python manage.py migrate
 #python manage.py loaddata data.json || echo "data.json не найден — пропускаем"
