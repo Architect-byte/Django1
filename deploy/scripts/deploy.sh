@@ -54,7 +54,7 @@ cd web_2025
 #python manage.py migrate --run-syncdb
 #python manage.py populate_db
 #python manage.py collectstatic --noinput
-
+python manage.py seed_data.py
 python manage.py dumpdata --indent 2 --output /tmp/data1.json
 python manage.py migrate
 #python manage.py loaddata data.json || echo "data.json не найден — пропускаем"
