@@ -17,7 +17,7 @@ Environment="DB_PORT=5432"
 
 ExecStart=/var/www/fefu_lab/Django1/venv/bin/gunicorn \
     --config /var/www/fefu_lab/deploy/gunicorn/config.py \
-    webtech_lab1.wsgi:application
+    web_2025.wsgi:application
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s TERM $MAINPID
 Restart=always
