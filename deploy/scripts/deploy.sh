@@ -40,7 +40,7 @@ apt install -y python3 python3-pip python3-venv python3-dev \
 # Проект
 #cd Django1
 python3 -m venv venv
-source venv/bin/activate
+. venv/bin/activate
 pip install -r requirements.txt
 
 # Конфиги (копируются из репозитория или создаются)
@@ -54,7 +54,7 @@ cd web_2025
 #python manage.py migrate --run-syncdb
 #python manage.py populate_db
 #python manage.py collectstatic --noinput
-python manage.py seed_data
+#source $VENV_DIR/bin/activate
 python manage.py dumpdata --indent 2 --output /tmp/data1.json
 python manage.py migrate
 #python manage.py loaddata data.json || echo "data.json не найден — пропускаем"
