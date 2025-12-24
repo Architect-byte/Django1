@@ -48,7 +48,7 @@ sudo cp deploy/systemd/gunicorn.service /etc/systemd/system/gunicorn.service
 sudo cp deploy/nginx/fefu_lab.conf /etc/nginx/sites-available/fefu_lab.conf
 sudo ln -sf /etc/nginx/sites-available/fefu_lab.conf /etc/nginx/sites-enabled/
 sudo rm -f /etc/nginx/sites-enabled/default
-
+echo "kllllkyu,kbb,uk,bvu ,yj ,.knbnt .l"
 # БД и данные
 cd web_2025
 #python manage.py migrate --run-syncdb
@@ -61,6 +61,8 @@ python manage.py migrate
 python manage.py loaddata /tmp/data1.json || echo "data1.json не найден — пропускаем"
 python manage.py collectstatic --noinput
 deactivate
+
+echo "wdghtrkyukhtr,lcrnttttrntrbnbyj,ybkut,"
 
 # Права
 chown -R www-data:www-data $PROJECT_DIR
