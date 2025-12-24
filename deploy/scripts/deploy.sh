@@ -26,10 +26,10 @@ apt install -y python3 python3-pip python3-venv python3-dev \
     postgresql postgresql-contrib nginx git libpq-dev
 
 # PostgreSQL
-#systemctl restart postgresql
-#sudo -u postgres psql -c "CREATE DATABASE fefu_lab_db;" 2>/dev/null || true
-#sudo -u postgres psql -c "CREATE USER fefu_user WITH PASSWORD '$DB_PASS';" 2>/dev/null || true
-#sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE fefu_lab_db TO fefu_user;"
+systemctl restart postgresql
+sudo -u postgres psql -c "CREATE DATABASE fefu_lab_db;" 2>/dev/null || true
+sudo -u postgres psql -c "CREATE USER fefu_user WITH PASSWORD '$DB_PASS';" 2>/dev/null || true
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE fefu_lab_db TO fefu_user;"
 
 # Очистка и клонирование
 #rm -rf $PROJECT_DIR/
