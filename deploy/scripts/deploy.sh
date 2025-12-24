@@ -37,7 +37,7 @@ systemctl restart postgresql
 #git clone $REPO_URL
 
 # Проект
-cd Django1
+#cd Django1
 python3 -m venv venv
 . venv/bin/activate
 pip install -r requirements.txt
