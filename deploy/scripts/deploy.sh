@@ -42,6 +42,12 @@ python3 -m venv venv
 . venv/bin/activate
 pip install -r requirements.txt
 
+# Тест подключения
+psql -U fefu_user -h 127.0.0.1 -d fefu_lab_db -c "\q" <<< "$DB_PASS" || {
+    echo "❌ PostgreSQL тест провален!"
+    exit 1
+}
+
 # Конфиги (копируются из репозитория или создаются)
 sudo cp deploy/systemd/gunicorn.service /etc/systemd/system/gunicorn.service
 sudo cp deploy/nginx/fefu_lab.conf /etc/nginx/sites-available/fefu_lab.conf
