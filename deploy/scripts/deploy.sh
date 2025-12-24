@@ -43,6 +43,7 @@ python3 -m venv venv
 pip install -r requirements.txt
 
 # БД и данные
+cd web_2025
 python manage.py migrate --run-syncdb
 python manage.py populate_db
 python manage.py collectstatic --noinput
