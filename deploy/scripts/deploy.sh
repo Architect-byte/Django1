@@ -26,9 +26,9 @@ apt install -y python3 python3-pip python3-venv python3-dev \
 
 # PostgreSQL
 systemctl restart postgresql
-#sudo -u postgres psql -c "CREATE DATABASE fefu_lab_db;" 2>/dev/null || true
-#sudo -u postgres psql -c "CREATE USER fefu_user WITH PASSWORD '$DB_PASS';" 2>/dev/null || true
-#sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE fefu_lab_db TO fefu_user;"
+sudo -u postgres psql -c "CREATE DATABASE fefu_lab_db;" 2>/dev/null || true
+sudo -u postgres psql -c "CREATE USER fefu_user WITH PASSWORD '$DB_PASS';" 2>/dev/null || true
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE fefu_lab_db TO fefu_user;"
 
 # Очистка и клонирование
 #rm -rf $PROJECT_DIR/
@@ -42,17 +42,17 @@ python3 -m venv venv
 . venv/bin/activate
 pip install -r requirements.txt
 
-# БД и данные
-cd web_2025
-python manage.py migrate --run-syncdb
-python manage.py populate_db
-python manage.py collectstatic --noinput
-
 # Конфиги (копируются из репозитория или создаются)
 sudo cp deploy/systemd/gunicorn.service /etc/systemd/system/gunicorn.service
 sudo cp deploy/nginx/fefu_lab.conf /etc/nginx/sites-available/fefu_lab.conf
 sudo ln -sf /etc/nginx/sites-available/fefu_lab.conf /etc/nginx/sites-enabled/
 sudo rm -f /etc/nginx/sites-enabled/default
+
+# БД и данные
+cd web_2025
+python manage.py migrate --run-syncdb
+python manage.py populate_db
+python manage.py collectstatic --noinput
 
 # Права
 chown -R www-data:www-data $PROJECT_DIR
