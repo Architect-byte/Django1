@@ -26,15 +26,15 @@ apt install -y python3 python3-pip python3-venv python3-dev \
 
 # PostgreSQL
 systemctl restart postgresql
-sudo -u postgres psql -c "CREATE DATABASE fefu_lab_db;" 2>/dev/null || true
-sudo -u postgres psql -c "CREATE USER fefu_user WITH PASSWORD '$DB_PASS';" 2>/dev/null || true
-sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE fefu_lab_db TO fefu_user;"
+#sudo -u postgres psql -c "CREATE DATABASE fefu_lab_db;" 2>/dev/null || true
+#sudo -u postgres psql -c "CREATE USER fefu_user WITH PASSWORD '$DB_PASS';" 2>/dev/null || true
+#sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE fefu_lab_db TO fefu_user;"
 
 # Очистка и клонирование
-rm -rf $PROJECT_DIR/Django1/web_2025 $PROJECT_DIR/deploy
-mkdir -p $PROJECT_DIR/{deploy/{nginx,systemd,gunicorn,scripts},static,media}
-cd $PROJECT_DIR
-git clone $REPO_URL
+#rm -rf $PROJECT_DIR/
+#mkdir -p $PROJECT_DIR/{static,media}
+#cd $PROJECT_DIR
+#git clone $REPO_URL
 
 # Проект
 cd Django1
