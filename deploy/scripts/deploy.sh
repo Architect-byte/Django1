@@ -69,7 +69,7 @@ deactivate
 chown -R www-data:www-data $PROJECT_DIR
 chmod -R 755 $PROJECT_DIR
 chmod +x /var/www/fefu_lab/Django1/venv/bin/gunicorn
-
+cd..
 # Сервисы
 cp deploy/systemd/gunicorn.service /etc/systemd/system/
 cp deploy/gunicorn/config.py $PROJECT_DIR/deploy/gunicorn/
@@ -78,6 +78,7 @@ ln -sf /etc/nginx/sites-available/fefu_lab.conf /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 
 nginx -t && systemctl restart nginx
+cd web_2025
 systemctl daemon-reload
 systemctl start gunicorn && systemctl enable gunicorn
 
