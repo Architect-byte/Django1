@@ -3,7 +3,7 @@ Description=FEFU Lab Gunicorn
 After=network.target postgresql.service
 
 [Service]
-User=user
+User=www-data
 Group=www-data
 WorkingDirectory=/var/www/fefu_lab/Django1/web_2025
 Environment="DJANGO_ENV=production"
