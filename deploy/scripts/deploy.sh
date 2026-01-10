@@ -50,6 +50,7 @@ sudo ln -sf /etc/nginx/sites-available/fefu_lab.conf /etc/nginx/sites-enabled/
 sudo rm -f /etc/nginx/sites-enabled/default
 # БД и данные
 cd web_2025
+echo "wdghtrkyukhtr,lcrnttttrntrbnbyj,ybkut,"
 #python manage.py migrate --run-syncdb
 #python manage.py populate_db
 #python manage.py collectstatic --noinput
