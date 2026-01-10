@@ -1,7 +1,8 @@
 command = '/var/www/fefu_lab/Django1/venv/bin/gunicorn'
-pythonpath = '/var/www/fefu_lab'
+pythonpath = '/var/www/fefu_lab/Django1/web_2025'
 bind = '127.0.0.1:8000'
 workers = 3
+user = 'user'
 worker_class = 'sync'
 worker_connections = 1000
 max_requests = 1000
