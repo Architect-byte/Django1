@@ -54,8 +54,9 @@ cd web_2025
 #python manage.py populate_db
 #python manage.py collectstatic --noinput
 #source $VENV_DIR/bin/activate
+python3 manage.py flush --noinput
 python3 manage.py makemigrations fefu_lab
-python3 manage.py migrate flush --noinput
+python3 manage.py migrate
 python3 manage.py seed_data
 python3 manage.py dumpdata --indent 2 --output /tmp/data1.json
 #python manage.py migrate
