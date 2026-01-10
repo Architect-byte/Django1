@@ -69,6 +69,10 @@ deactivate
 chown -R www-data:www-data $PROJECT_DIR
 chmod -R 755 $PROJECT_DIR
 chmod +x /var/www/fefu_lab/Django1/venv/bin/gunicorn
+sudo chown -R user:www-data /var/log/gunicorn
+sudo chmod -R 775 /var/log/gunicorn
+sudo chmod 664 /var/log/gunicorn/*.log
+sudo chown user:www-data /var/log/gunicorn/*.log
 cd ..
 # Сервисы
 cp deploy/systemd/gunicorn.service /etc/systemd/system/
