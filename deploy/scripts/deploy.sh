@@ -68,7 +68,7 @@ deactivate
 # Права
 chown -R www-data:www-data $PROJECT_DIR
 chmod -R 755 $PROJECT_DIR
-
+cd ..
 # Сервисы
 cp deploy/systemd/gunicorn.service /etc/systemd/system/
 cp deploy/gunicorn/config.py $PROJECT_DIR/deploy/gunicorn/
