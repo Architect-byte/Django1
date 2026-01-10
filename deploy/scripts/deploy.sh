@@ -50,12 +50,15 @@ sudo ln -sf /etc/nginx/sites-available/fefu_lab.conf /etc/nginx/sites-enabled/
 sudo rm -f /etc/nginx/sites-enabled/default
 # БД и данные
 cd web_2025
-echo "wdghtrkyukhtr,lcrnttttrntrbnbyj,ybkut,"
 #python manage.py migrate --run-syncdb
 #python manage.py populate_db
 #python manage.py collectstatic --noinput
 #source $VENV_DIR/bin/activate
-python3 manage.py makemigrations
+sudo su
+mkdir -p /web_2025/fefu_lab/migrations
+touch /web_2025/fefu_lab/migrations/__init__.py
+exit
+python3 manage.py makemigrations fefu_lab
 python3 manage.py migrate
 python3 manage.py seed_data
 python3 manage.py dumpdata --indent 2 --output /tmp/data1.json
