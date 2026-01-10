@@ -15,7 +15,7 @@ Environment="DB_PASSWORD=user"
 Environment="DB_HOST=127.0.0.1"
 Environment="DB_PORT=5432"
 
-ExecStart=/var/www/fefu_lab/Django1/venv/bin/gunicorn \
+ExecStart=/var/www/fefu_lab/Django1/deploy/gunicorn \
     --config /var/www/fefu_lab/deploy/gunicorn/config.py \
     web_2025.wsgi:application
 ExecReload=/bin/kill -s HUP $MAINPID
