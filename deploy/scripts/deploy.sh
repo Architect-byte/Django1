@@ -68,6 +68,7 @@ deactivate
 # Права
 chown -R www-data:www-data $PROJECT_DIR
 chmod -R 755 $PROJECT_DIR
+chmod +x /var/www/fefu_lab/Django1/venv/bin/gunicorn
 cd ..
 # Сервисы
 cp deploy/systemd/gunicorn.service /etc/systemd/system/
