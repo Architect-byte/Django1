@@ -1,0 +1,25 @@
+# Игнорировать git
+.git
+.gitignore
+.gitignire
+
+# Виртуальные окружения
+.venv
+venv
+*.pyc
+pycache/
+
+# Локальные файлы
+*.log
+*.pot
+*.pyc
+*.pyo
+*.mo
+*.db
+*.sqlite3
+
+media/
+staticfiles/
+
+README.md
+requirements.txt

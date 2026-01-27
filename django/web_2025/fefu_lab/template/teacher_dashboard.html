@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Дашборд преподавателя{% endblock %}
+{% block heading %}Дашборд преподавателя{% endblock %}
+
+{% block content %}
+  <h2>Добро пожаловать, {{ instructor.first_name }} {{ instructor.last_name }}!</h2>
+  <p><strong>Email:</strong> {{ instructor.email }}</p>
+  <p><strong>Специализация:</strong> {{ instructor.specialization }}</p>
+  <p><strong>Учёная степень:</strong> {{ instructor.degree }}</p>
+
+  <h3>Ваши курсы:</h3>
+  <ul>
+    {% for course in courses %}
+      <li>
+        <a href="{% url 'course_profile' course.slug %}">{{ course.title }}</a>
+        ({{ course.get_level_display }} уровень, {{ course.duration }} часов)
+      </li>
+    {% empty %}
+      <li>У вас нет активных курсов для управления.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

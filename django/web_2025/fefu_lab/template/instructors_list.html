@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Список преподавателей{% endblock %}
+{% block heading %}Преподаватели{% endblock %}
+
+{% block content %}
+  <ul>
+    {% for instructor in instructors %}
+      <li>{{ instructor.first_name }} {{ instructor.last_name }} — <a href="mailto:{{ instructor.email }}">{{ instructor.email }}</a></li>
+    {% empty %}
+      <li>Преподаватели не найдены.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
